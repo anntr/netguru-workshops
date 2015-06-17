@@ -1,9 +1,19 @@
 class ProductsController < ApplicationController
+  before_action :authenticate_user!, only: [:new, :edit, :update, :destroy, :create]
+  before_action :redirect_if_user_is_not_author, only: [:edit, :update]
   expose(:category)
   expose(:products)
   expose(:product)
   expose(:review) { Review.new }
   expose_decorated(:reviews, ancestor: :product)
+
+
+  def redirect_if_user_is_not_author
+    if !(current_user.products.pluck(:id).include? product.id)
+      flash[:error] = 'You are not allowed to edit this product.'
+      redirect_to category_product_url(category, product) and return
+    end
+  end
 
   def index
   end
@@ -19,7 +29,6 @@ class ProductsController < ApplicationController
 
   def create
     self.product = Product.new(product_params)
-
     if product.save
       category.products << product
       redirect_to category_product_url(category, product), notice: 'Product was successfully created.'
@@ -29,6 +38,7 @@ class ProductsController < ApplicationController
   end
 
   def update
+
     if self.product.update(product_params)
       redirect_to category_product_url(category, product), notice: 'Product was successfully updated.'
     else

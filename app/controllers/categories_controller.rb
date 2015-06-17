@@ -1,6 +1,7 @@
 class CategoriesController < ApplicationController
   before_action :authenticate_user!, only: [:new, :edit, :update, :destroy, :create]
-  
+  before_action :redirect_to_login_if_not_admin, only: [:new, :edit, :update, :create]
+
   expose(:categories)
   expose(:category)
   expose(:product) { Product.new }
@@ -28,6 +29,9 @@ class CategoriesController < ApplicationController
   end
 
   def update
+    unless current_user.admin?
+      redirect_to new_user_session_path and return
+    end
     if category.update(category_params)
       redirect_to category, notice: 'Category was successfully updated.'
     else
