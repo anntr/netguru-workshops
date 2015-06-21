@@ -45,6 +45,7 @@ describe ProductsController do
       product.user = user
     end
 
+
     describe 'GET edit' do
       describe 'with valid params' do
         it 'redirects to product page' do
