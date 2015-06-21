@@ -7,14 +7,16 @@ class ReviewsController < ApplicationController
   end
 
   def create
-    self.review = Review.new(review_params)
-
+    review = Review.new(review_params)
+    review.product_id = params[:product_id]
+    review.user_id = current_user.id
     if review.save
       product.reviews << review
-      redirect_to category_product_url(product.category, product), notice: 'Review was successfully created.'
+      notice = 'Review was successfully created.'
     else
-      render action: 'new'
+      notice = "Couldn't create review"
     end
+    redirect_to category_product_url(product.category, product), notice: notice
   end
 
   def destroy

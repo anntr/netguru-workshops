@@ -1,0 +1,14 @@
+%h1 Our members
+.users.container
+  -@users.each do |user|
+    .user.row
+      .name.col-sm-6
+        =user.firstname
+        %br/
+        =user.lastname
+      .stats.col-sm-6
+        Posted #{user.reviews.count} reviews
+        %br/
+        =link_to "Visit #{user.firstname} profile", user_path(user.id)
+
+

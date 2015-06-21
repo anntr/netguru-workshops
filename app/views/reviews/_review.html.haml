@@ -1,4 +1,14 @@
-%p= review.content
-%p
-  %b= review.rating
-  %em= review.author
+.review
+  %ul.list-group
+    %li.list-group-item
+      Author:
+      =review.author
+    %li.list-group-item
+      Rating:
+      =review.rating
+      out of 5
+    %li.list-group-item
+      ,,
+      =review.content
+      ,,
+

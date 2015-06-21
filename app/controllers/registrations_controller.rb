@@ -5,7 +5,10 @@ class RegistrationsController < Devise::RegistrationsController
   def create
     user = User.new(sign_up_params)
     if user.save
-      puts "no kurwaaaaaa"
+      redirect_to user_path(user.id), :flash => { :notice => "User signed up!" }
+    else
+      flash.keep
+      redirect_to new_registration_path('user'), :flash => { :error => "Couldn't sign up a new user. Please try again" }
     end
   end
   private

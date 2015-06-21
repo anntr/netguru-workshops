@@ -1,0 +1,56 @@
+.user
+  %h1
+    Userpage
+  .row
+    .name.col-sm-2
+      =@user.firstname
+      %br/
+      =@user.lastname
+
+    .stats
+      .row
+        .col-sm-5
+          -if @user.admin?
+            %span.admin
+              Administrator
+            %br/
+          %span.email
+            Email:
+            =@user.email
+          %br/
+          %span.reviews
+            Posted:
+            =@user.reviews.count
+            reviews
+          %br/
+          %span.created
+            Created:
+            =@user.products.count
+            products
+          %br/
+          -if @user.last_sign_in_at
+            Last seen:
+            =@user.last_sign_in_at.to_formatted_s(:short)
+
+  .reviews.row
+    %h1
+      Last user reviews:
+    %ul.list-group
+      -if @user.reviews.count == 0
+        User did not posted yet any reviews.
+      -else
+        -@user.reviews.each do |review|
+          %li.review.list-group-item
+            =review.created_at.strftime("%m/%d/%Y")
+            %br/
+            Product:
+            =review.product.title
+            %br/
+            Rating:
+            =review.rating
+            %br/
+            Opinion:
+            =review.content
+
+
+

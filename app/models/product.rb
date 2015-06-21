@@ -7,6 +7,6 @@ class Product < ActiveRecord::Base
   validates :price, format: { with: /\A\d+\.*\d{0,2}\z/ }
 
   def average_rating
-    reviews.pluck(:rating).sum.to_f / reviews.count
+    ( reviews.pluck(:rating).sum.to_f / reviews.count ).to_f
   end
 end

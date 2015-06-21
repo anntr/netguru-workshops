@@ -1,17 +1,35 @@
 %p#notice= notice
 
 %p
-  %b Name:
+  %b Category:
   = category.name
-
-%p
+  %br/
+  Take a look at our awesome products!
+.list-group
   - category.products.each do |product|
-    = product.title
+    .list-group-item
+      Name:
+      = product.title
+      %br/
+      Our price:
+      %span.price
+      = product.price
+      $
+      %br/
+      -unless product.average_rating.nan?
+        Customers rating:
+        %span.rating
+        = product.average_rating
+        out of 5
+        %br/
+      =link_to "See product",  category_product_path(product.category, product)
 
-%p
-  %h3 New product
-  = render 'products/form'
 
-= link_to 'Edit', edit_category_path(category)
-\|
-= link_to 'Back', categories_path, class: 'btn btn-primary'
+-if user_signed_in?
+  %p
+    %h3 New product
+    = render 'products/form'
+
+= link_to 'Edit', edit_category_path(category), class: 'btn btn-default'if user_signed_in? && current_user.admin?
+
+= link_to 'Back to categories', categories_path, class: 'btn btn-primary'
